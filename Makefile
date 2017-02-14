@@ -1,5 +1,3 @@
-.PHONY: run stop
-
 run:
 	docker-compose -p awale up -d
 
