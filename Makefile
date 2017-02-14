@@ -4,11 +4,8 @@ run:
 install:
 	docker-compose -p awale build
 
-logs:
-	docker-compose -p awale logs -f
-
-ps:
-	docker-compose -p awale ps
+dc:
+	docker-compose -p awale $(args)
 
 stop:
 	docker-compose -p awale down
