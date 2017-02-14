@@ -7,6 +7,10 @@ install:
 stop:
 	$(MAKE) dk down
 
+refresh-containers:
+	$(MAKE) dke rm -f
+	$(MAKE) dk build
+
 dk:
 	docker-compose -p awale $(COMMAND_ARGS)
 
