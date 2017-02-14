@@ -11,6 +11,8 @@ services:
 
     nginx:
       image: nginx:alpine
+      depends_on:
+        - php
       ports:
         - "80:80"
       volumes:
