@@ -7,8 +7,6 @@ run:
 install:
 	$(MAKE) dk -- build
 	$(MAKE) dk -- run --no-deps php composer install -d /app
-	#sudo chmod -R 777 var/cache var/logs 
-
 
 stop:
 	$(MAKE) dk down
