@@ -8,4 +8,10 @@ Experimental Awale bot on Slack
 make run
 ```
 
-Your web server is up and running at [http://localhost](http://localhost), to stop it use ```make stop```
+Your web server is up and running at [http://localhost](http://localhost)
+
+## Stop Webserver
+
+```
+make stop
+```

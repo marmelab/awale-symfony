@@ -10,6 +10,7 @@ stop:
 dk:
 	docker-compose -p awale $(COMMAND_ARGS)
 
+# Utility commands used to pass some arguments (COMMAND_ARGS) to following commands docker
 SUPPORTED_COMMANDS := dk
 SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
 ifneq "$(SUPPORTS_MAKE_ARGS)" ""
