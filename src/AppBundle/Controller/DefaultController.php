@@ -5,6 +5,9 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+use GuzzleHttp\Client;
 
 class DefaultController extends Controller
 {
@@ -18,4 +21,17 @@ class DefaultController extends Controller
             'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
         ]);
     }
+
+    /**
+     * @Route("/hello", name="hello")
+     */
+     public function helloAction()
+     {
+        $client = new Client([
+            'base_uri' => 'go:8080'
+        ]);
+        $response = $client->request('GET', '/');
+        $contents = (string) $response->getBody();
+        return new Response($contents);
+     }
 }
