@@ -2,6 +2,7 @@ version: '2'
 
 services:
     php:
+      user: "${UID}:${GID}"
       build: docker/php7fpm
       expose:
         - 9000

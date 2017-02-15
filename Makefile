@@ -1,14 +1,22 @@
+export $UID = $(id -u)
+export $GID = $(id -g)
+
 run:
 	$(MAKE) dk up -d
 
 install:
 	$(MAKE) dk build
+	$(MAKE) dk run --no-deps php composer install -d /app
+
+dc:
+	docker-compose -p awale $(args)
 
 stop:
 	$(MAKE) dk down
 
 refresh-containers:
-	$(MAKE) dke rm -f
+	$(MAKE) dk down
+	$(MAKE) dk rm -f
 	$(MAKE) dk build
 
 dk:
