@@ -2,9 +2,11 @@ version: '2'
 
 services:
     php:
+      user: "${UID}:${GID}"
       build: docker/php7fpm
       expose:
         - 9000
+      working_dir: /app
       volumes:
         - .:/app
         - ./docker/php7fpm/php.ini:/usr/local/etc/php/conf.d/99-overrides.ini
