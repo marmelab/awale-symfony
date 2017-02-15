@@ -1,0 +1,3 @@
+[submodule "awale-go"]
+	path = awale-go
+	url = git@github.com:marmelab/awale-go.git
