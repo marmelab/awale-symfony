@@ -2,18 +2,18 @@ export $UID = $(id -u)
 export $GID = $(id -g)
 
 run:
-	$(MAKE) dk up -d
+	$(MAKE) dk -- up -d
 
 install:
-	$(MAKE) dk build
-	$(MAKE) dk run --no-deps php composer install -d /app
+	$(MAKE) dk -- build
+	$(MAKE) dk -- run --no-deps php composer install -d /app
 
 stop:
 	$(MAKE) dk down
 
 refresh-containers:
 	$(MAKE) dk down
-	$(MAKE) dk rm -f
+	$(MAKE) dk -- rm -f
 	$(MAKE) dk build
 
 dk:
