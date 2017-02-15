@@ -8,9 +8,6 @@ install:
 	$(MAKE) dk build
 	$(MAKE) dk run --no-deps php composer install -d /app
 
-dc:
-	docker-compose -p awale $(args)
-
 stop:
 	$(MAKE) dk down
 
