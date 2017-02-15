@@ -1,11 +1,19 @@
 run:
-	docker-compose -p awale up -d
+	$(MAKE) dk up -d
 
 install:
-	docker-compose -p awale build
-
-dc:
-	docker-compose -p awale $(args)
+	$(MAKE) dk build
 
 stop:
-	docker-compose -p awale down
+	$(MAKE) dk down
+
+dk:
+	docker-compose -p awale $(COMMAND_ARGS)
+
+SUPPORTED_COMMANDS := dk
+SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
+ifneq "$(SUPPORTS_MAKE_ARGS)" ""
+  COMMAND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  COMMAND_ARGS := $(subst :,\:,$(COMMAND_ARGS))
+  $(eval $(COMMAND_ARGS):;@:)
+endif

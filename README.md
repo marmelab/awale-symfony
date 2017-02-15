@@ -8,12 +8,4 @@ Experimental Awale bot on Slack
 make run
 ```
 
-Your web server is up and running at "localhost", to stop it use ```make stop```
-
-## Docker commands
-
-```
-make dc args="your_param"
-```
-
-Launch docker-compose -p awale your_param
+Your web server is up and running at [http://localhost](http://localhost), to stop it use ```make stop```
