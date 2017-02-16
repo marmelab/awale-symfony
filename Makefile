@@ -22,6 +22,9 @@ dk:
 expose:
 	ngrok start app --config=ngrok.yml
 
+test:
+	$(MAKE) dk -- run --no-deps php phpunit -v
+
 # Utility commands used to pass some arguments (COMMAND_ARGS) to following commands docker
 SUPPORTED_COMMANDS := dk
 SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))

@@ -14,8 +14,8 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
     || !(strncmp('172.19.0.', $_SERVER['REMOTE_ADDR'], 9) === 0)
     || php_sapi_name() === 'cli-server'
 ) {
-    header('HTTP/1.0 403 Forbidden');
-    exit('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
+    // header('HTTP/1.0 403 Forbidden');
+    // exit('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
 }
 
 /** @var \Composer\Autoload\ClassLoader $loader */

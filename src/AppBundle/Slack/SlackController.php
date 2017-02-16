@@ -30,22 +30,17 @@ class SlackController extends Controller
      */
      public function webhookAction(Request $request)
      {
-
-      //  $token = $request->request->get('token');
-      //  $command = $request->request->get('command');
-      //  $text = $request->request->get('text');
        $channel_id = $request->request->get('channel_id');
-      //  $response_url = $request->request->get('response_url');
 
-        $content = $this->awaleClient->getHelloWorld();
+       $content = $this->awaleClient->getNewGame();
 
-        $message = array(
-          "text" => $content,
+       $message = array(
+          "text" => implode("|", $content["Board"]),
           "channel" => $channel_id,
-        );
+       );
 
-        $this->slackClient->sendMessage($message);
+       $this->slackClient->sendMessage($message);
 
-        return new Response("");
+       return new Response("");
      }
 }

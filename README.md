@@ -16,8 +16,20 @@ Your web server is up and running at [http://localhost](http://localhost)
 make stop
 ```
 
+## Expose Webserver
+
+```
+make expose
+```
+
 ## Update Submodule
 
 ```
 git submodule update --recursive --remote
+```
+
+## Test
+
+```
+make test
 ```

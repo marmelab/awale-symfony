@@ -15,10 +15,11 @@ class AwaleClient
      ]);
   }
 
-  public function getHelloWorld()
+  public function getNewGame()
   {
      $response = $this->client->request('GET', '/');
-     return (string) $response->getBody();
+
+     return json_decode($response->getBody(), true);
   }
 
 }
