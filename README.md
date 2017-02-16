@@ -15,3 +15,9 @@ Your web server is up and running at [http://localhost](http://localhost)
 ```
 make stop
 ```
+
+## Update Submodule
+
+```
+git submodule update --recursive --remote
+```
