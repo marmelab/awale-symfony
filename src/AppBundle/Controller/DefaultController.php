@@ -25,13 +25,36 @@ class DefaultController extends Controller
     /**
      * @Route("/hello", name="hello")
      */
-     public function helloAction()
+     public function helloAction(Request $request)
      {
-        $client = new Client([
+
+       $slack_webhook_url = "https://hooks.slack.com/services/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";
+       //
+       $token = $request->request->get('token');
+       $command = $request->request->get('command');
+       $text = $request->request->get('text');
+       $channel_id = $request->request->get('channel_id');
+       $response_url = $request->request->get('response_url');
+
+       $client = new Client([
             'base_uri' => 'go:8080'
         ]);
         $response = $client->request('GET', '/');
         $contents = (string) $response->getBody();
-        return new Response($contents);
+
+        $message = array(
+          "text" => $contents,
+          "channel" => $channel_id,
+        );
+
+        $c = curl_init($slack_webhook_url);
+        curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($c, CURLOPT_POST, true);
+        curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($message));
+        curl_setopt($c, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+        $result = curl_exec($c);
+        curl_close($c);
+
+        return new Response(json_decode($result));
      }
 }

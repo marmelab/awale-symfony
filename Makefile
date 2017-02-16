@@ -19,6 +19,9 @@ refresh-containers:
 dk:
 	docker-compose -p awale $(COMMAND_ARGS)
 
+expose:
+	ngrok start app --config=ngrok.yml
+
 # Utility commands used to pass some arguments (COMMAND_ARGS) to following commands docker
 SUPPORTED_COMMANDS := dk
 SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
