@@ -38,7 +38,7 @@ class SlackController extends Controller
            $content = $this->awaleClient->getNewGame();
        }
        else {
-           $content = $this->awaleClient->getGame($textCommand);
+           $content = $this->awaleClient->movePosition($textCommand);
        }
 
        $message = array(

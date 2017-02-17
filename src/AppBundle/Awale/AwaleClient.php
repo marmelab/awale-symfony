@@ -22,10 +22,9 @@ class AwaleClient
      return json_decode($response->getBody(), true);
   }
 
-  public function getGame($position)
+  public function movePosition($position)
   {
       $response = $this->client->request('POST', '/move', [
-          'headers' => ['Content-type' => 'application/json'],
           'json' => [
               'Position' => $position,
               'Board' => array(4,4,4,4,4,4,4,4,4,4,4,4),
