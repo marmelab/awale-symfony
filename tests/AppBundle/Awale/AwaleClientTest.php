@@ -17,7 +17,7 @@ class AwaleClientTest extends WebTestCase
         $client = new Client([
             'base_uri' => 'go:8080'
         ]);
-        $response = $client->request('GET', '/');
+        $response = $client->request('GET', '/new');
         $this->assertEquals(200, $response->getStatusCode());
     }
 }
