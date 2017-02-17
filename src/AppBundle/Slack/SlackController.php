@@ -31,12 +31,24 @@ class SlackController extends Controller
      public function webhookAction(Request $request)
      {
        $channel_id = $request->request->get('channel_id');
+       $textCommand = $request->request->get('text');
 
-       $content = $this->awaleClient->getNewGame();
+       if($textCommand === "new")
+       {
+           $content = $this->awaleClient->getNewGame();
+       }
+       else {
+           $content = $this->awaleClient->getGame($textCommand);
+       }
 
        $message = array(
-          "text" => implode("|", $content["Board"]),
+          "text" =>  implode("|", $content["Board"]),
           "channel" => $channel_id,
+          "attachments" => array(
+              array(
+                  "image_url" => "http://www.espritjeu.com/upload/image/awale-p-image-47814-grande.jpg",
+              )
+          )
        );
 
        $this->slackClient->sendMessage($message);
