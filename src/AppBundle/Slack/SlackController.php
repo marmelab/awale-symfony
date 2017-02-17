@@ -41,7 +41,7 @@ class SlackController extends Controller
            $content = $this->awaleClient->movePosition($textCommand);
        }
 
-       $message = array(
+       $message = [
           "text" =>  implode("|", $content["Board"]),
           "channel" => $channel_id,
           "attachments" => array(
@@ -49,7 +49,7 @@ class SlackController extends Controller
                   "image_url" => "http://www.espritjeu.com/upload/image/awale-p-image-47814-grande.jpg",
               )
           )
-       );
+      ];
 
        $this->slackClient->sendMessage($message);
 

@@ -1,20 +1,24 @@
 <?php
 namespace AppBundle\Slack;
 
+use GuzzleHttp\Client;
+
 class SlackClient
 {
+    const ENDPOINT = "https://hooks.slack.com/services/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";
 
-  const ENDPOINT = "https://hooks.slack.com/services/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";
+    private $client;
 
-  public function sendMessage($message)
-  {
-    $c = curl_init(self::ENDPOINT);
-    curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($c, CURLOPT_POST, true);
-    curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($message));
-    curl_setopt($c, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
-    $result = curl_exec($c);
-    curl_close($c);
-    return $result;
-  }
+    public function __construct()
+    {
+        $this->client = new Client();
+    }
+
+    public function sendMessage($message)
+    {
+        $message = is_string($message) ? ['text' => $message] : $message;
+        $response = $this->client->request('POST', self::ENDPOINT, [
+            'json' => $message
+        ]);
+    }
 }
