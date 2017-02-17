@@ -2,22 +2,23 @@
 namespace AppBundle\Slack;
 
 use GuzzleHttp\Client;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class SlackClient
 {
-    const ENDPOINT = "https://hooks.slack.com/services/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";
-
     private $client;
+    private $key;
 
-    public function __construct()
+    public function __construct(Client $client, $key)
     {
-        $this->client = new Client();
+        $this->client = $client;
+        $this->key = $key;
     }
 
     public function sendMessage($message)
     {
         $message = is_string($message) ? ['text' => $message] : $message;
-        $response = $this->client->request('POST', self::ENDPOINT, [
+        $response = $this->client->request('POST', $this->key, [
             'json' => $message
         ]);
     }
