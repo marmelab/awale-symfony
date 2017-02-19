@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Slack\SlackClient;
 use AppBundle\Awale\AwaleClient;
+use AppBundle\Awale\AwaleManager;
 
 use GuzzleHttp\Client;
 
@@ -18,11 +19,13 @@ class SlackController extends Controller
 {
     private $slackClient;
     private $awaleClient;
+    private $awaleManager;
 
-    public function __construct(SlackClient $slackClient, AwaleClient $awaleClient)
+    public function __construct(SlackClient $slackClient, AwaleClient $awaleClient, AwaleManager $awaleManager)
     {
         $this->slackClient = $slackClient;
         $this->awaleClient = $awaleClient;
+        $this->awaleManager = $awaleManager;
     }
 
     /**
@@ -30,7 +33,8 @@ class SlackController extends Controller
      */
      public function webhookAction(Request $request)
      {
-       $channelId = $request->request->get('channel_id');
+       $user_id = $request->request->get('user_id');
+       $channel_id = $request->request->get('channel_id');
        $textCommand = $request->request->get('text');
 
        if($textCommand === 'new') {
@@ -41,14 +45,16 @@ class SlackController extends Controller
 
        $content = json_decode($response->getBody()->getContents(), true);
 
+       $url = $this->awaleManager->pngGameBoard($content["Board"]);
+
        $message = [
-          'text' =>  implode('|', $content['Board']),
-          'channel' => $channelId,
-          'attachments' => [
-              [
-                  'image_url' => 'http://www.espritjeu.com/upload/image/awale-p-image-47814-grande.jpg',
-              ],
-          ],
+          "text" =>  implode("|", $content["Board"]),
+          "channel" => $channel_id,
+          "attachments" => array(
+              array(
+                  "image_url" => $url,
+              )
+          )
       ];
 
        $this->slackClient->sendMessage($message);
