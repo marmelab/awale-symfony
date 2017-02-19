@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Slack\SlackClient;
 use AppBundle\Awale\AwaleClient;
 use AppBundle\Awale\AwaleManager;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 use GuzzleHttp\Client;
 
@@ -20,12 +21,14 @@ class SlackController extends Controller
     private $slackClient;
     private $awaleClient;
     private $awaleManager;
+    private $session;
 
-    public function __construct(SlackClient $slackClient, AwaleClient $awaleClient, AwaleManager $awaleManager)
+    public function __construct(SlackClient $slackClient, AwaleClient $awaleClient, AwaleManager $awaleManager, Session $session)
     {
         $this->slackClient = $slackClient;
         $this->awaleClient = $awaleClient;
         $this->awaleManager = $awaleManager;
+        $this->session = $session;
     }
 
     /**
@@ -37,26 +40,22 @@ class SlackController extends Controller
        $channel_id = $request->request->get('channel_id');
        $textCommand = $request->request->get('text');
 
-       if($textCommand === 'new') {
+       if($textCommand === "new")
+       {
            $response = $this->awaleClient->getNewGame();
-       } else {
-           $response = $this->awaleClient->movePosition($textCommand);
+           $game = json_decode($response->getBody()->getContents(), true);
+           $message = $this->awaleManager->getMessageForNewGame($channel_id, $game);
+           $this->slackClient->sendMessage($message);
+
+           $this->session->set($user_id, $game);
+           return new Response("");
        }
 
-       $content = json_decode($response->getBody()->getContents(), true);
+       $currentBoard = $this->session->get($user_id)['Board'];
 
-       $url = $this->awaleManager->pngGameBoard($content["Board"]);
-
-       $message = [
-          "text" =>  implode("|", $content["Board"]),
-          "channel" => $channel_id,
-          "attachments" => array(
-              array(
-                  "image_url" => $url,
-              )
-          )
-      ];
-
+       $response = $this->awaleClient->movePosition($currentBoard, $textCommand);
+       $game = json_decode($response->getBody()->getContents(), true);
+       $message = $this->awaleManager->getMessageForPosition($channel_id, $game);
        $this->slackClient->sendMessage($message);
 
        return new Response();

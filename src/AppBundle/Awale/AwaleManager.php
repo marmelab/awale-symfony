@@ -14,7 +14,48 @@ class AwaleManager
         $this->urlImage = $urlImage;
     }
 
-    public function pngGameBoard($board)
+    public function getMessageForNewGame($channel_id, $game)
+    {
+        $url = $this->pngGameBoard($game["Board"]);
+
+        $message = [
+           "text" => 'Score: ' . $game["Score"][0] . ' - ' . $game["Score"][1],
+           "channel" => $channel_id,
+           "attachments" => array(
+               array(
+                   "image_url" => $url,
+               )
+           )
+       ];
+
+       return $message;
+    }
+
+    public function getMessageForPosition($channel_id, $game)
+    {
+        $gamePlayer = $game["Player"];
+        $gameIA = $game["IA"];
+
+        $urlBoardPlayer = $this->pngGameBoard($gamePlayer["Board"]);
+        $urlBoardIA = $this->pngGameBoard($gameIA["Board"]);
+
+        $message = [
+           "text" => 'Score: ' . $gameIA["Score"][0] . ' - ' . $gameIA["Score"][1],
+           "channel" => $channel_id,
+           "attachments" => array(
+               array(
+                   "image_url" => $urlBoardPlayer,
+               ),
+               array(
+                   "image_url" => $urlBoardIA,
+               )
+           )
+       ];
+
+       return $message;
+    }
+
+    private function pngGameBoard($board)
     {
         $name = uniqid() . '.png';
         $path = dirname(__FILE__) . '/../../../web/images/' . $name;
