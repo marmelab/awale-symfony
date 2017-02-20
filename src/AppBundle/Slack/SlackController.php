@@ -30,11 +30,10 @@ class SlackController extends Controller
      */
      public function webhookAction(Request $request)
      {
-       $channel_id = $request->request->get('channel_id');
+       $channelId = $request->request->get('channel_id');
        $textCommand = $request->request->get('text');
 
-       if($textCommand === "new")
-       {
+       if($textCommand === "new") {
            $content = $this->awaleClient->getNewGame();
        }
        else {
@@ -43,7 +42,7 @@ class SlackController extends Controller
 
        $message = [
           "text" =>  implode("|", $content["Board"]),
-          "channel" => $channel_id,
+          "channel" => $channelId,
           "attachments" => array(
               array(
                   "image_url" => "http://www.espritjeu.com/upload/image/awale-p-image-47814-grande.jpg",

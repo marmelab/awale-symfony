@@ -3,13 +3,9 @@
 parameters:
 
 services:
-   guzzle.client:
-      class: GuzzleHttp\Client
-
    app.slack.client:
       class: AppBundle\Slack\SlackClient
       arguments:
-          - "@guzzle.client"
           - "%slack_endpoint%"
 
    app.awale.client:
