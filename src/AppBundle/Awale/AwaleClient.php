@@ -3,21 +3,27 @@
 namespace AppBundle\Awale;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Middleware;
 
-class AwaleClient extends \GuzzleHttp\Client
+class AwaleClient
 {
-  const baseUri = 'go:8080';
+  private $client;
+  private $urlServerAwale;
+
+  public function __construct(Client $client, $urlServerAwale)
+  {
+      $this->client = $client;
+      $this->urlServerAwale = $urlServerAwale;
+  }
 
   public function getNewGame()
   {
-     $response = $this->request('GET', self::baseUri . '/new');
+     $response = $this->client->request('GET', $this->urlServerAwale . '/new');
      return json_decode($response->getBody(), true);
   }
 
   public function movePosition($position)
   {
-      $response = $this->request('POST', self::baseUri . '/move', [
+      $response = $this->client->request('POST', $this->urlServerAwale . '/move', [
           'json' => [
               'Position' => $position,
               'Board' => array(4,4,4,4,4,4,4,4,4,4,4,4),

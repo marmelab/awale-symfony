@@ -1,15 +1,23 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/service_container.html
 parameters:
+    urlServerAwale: "go:8080"
 
 services:
+      guzzle.client:
+          class: GuzzleHttp\Client
+
    app.slack.client:
       class: AppBundle\Slack\SlackClient
       arguments:
+          - "@guzzle.client"
           - "%slack_endpoint%"
 
    app.awale.client:
       class: AppBundle\Awale\AwaleClient
+      arguments:
+          - "@guzzle.client"
+          - "%urlServerAwale%"
 
    app.slack.controller:
        class: AppBundle\Slack\SlackController
