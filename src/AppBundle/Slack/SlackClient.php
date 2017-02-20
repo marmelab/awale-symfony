@@ -20,6 +20,7 @@ class SlackClient
         $response = $this->client->request('POST', $this->key, [
             'json' => $message,
         ]);
+        
         return $response;
     }
 }

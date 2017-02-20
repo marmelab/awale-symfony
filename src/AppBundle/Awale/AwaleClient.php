@@ -18,6 +18,7 @@ class AwaleClient
     public function getNewGame()
     {
         $response = $this->client->request('GET', $this->urlServerAwale.'/new');
+        var_dump($response);
         if($response === null) {
             return null;
         }

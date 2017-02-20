@@ -4,7 +4,6 @@ namespace Tests\AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use GuzzleHttp\Client;
-use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Request;
@@ -17,10 +16,10 @@ class SlackClientTest extends WebTestCase
     {
         $mockedClient = $this->prophesize(Client::class);
         $mockedClient
-            ->request('POST', '', ["json" => ["text" => "hello"]])
+            ->request('POST', 'key', ["json" => ["text" => "hello"]])
             ->shouldBeCalled();
 
-        $client = new SlackClient($mockedClient->reveal(), '');
+        $client = new SlackClient($mockedClient->reveal(), 'key');
         $message = $client->sendMessage('hello');
     }
 }
