@@ -8,6 +8,7 @@ install:
 	$(MAKE) dk -- build
 	$(MAKE) dk -- run --no-deps php composer install -d /app
 	cp -n phpunit.xml.dist phpunit.xml
+	git submodule update --recursive --remote
 
 stop:
 	$(MAKE) dk down

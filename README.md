@@ -22,11 +22,8 @@ make stop
 make expose
 ```
 
-## Update Submodule
-
-```
-git submodule update --recursive --remote
-```
+We use ngrok to expose web server, we can't call localhost directly for slack webhook.
+Ngrok generate tunnel to localhost, looks like http://*****.ngrok.io
 
 ## Test
 
