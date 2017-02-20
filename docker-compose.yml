@@ -1,11 +1,25 @@
 version: '2'
 
 services:
+    postgres:
+        image: postgres
+        environment:
+            - POSTGRES_USER=docker
+            - POSTGRES_PASSWORD=docker
+        volumes:
+            - ./var/data:/var/lib/postgresql/data
+        user: "${UID}:${GID}"
+        expose:
+            - 5432
+        ports:
+            - "5432:5432"
+
     php:
       user: "${UID}:${GID}"
       build: docker/php7fpm
       depends_on:
         - go
+        - postgres
       expose:
         - 9000
       working_dir: /app

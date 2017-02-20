@@ -21,7 +21,7 @@ services:
 
    app.slack.controller:
        class: AppBundle\Slack\SlackController
-       arguments: ["@app.slack.client", "@app.awale.client", "@app.awale.manager", "@session"]
+       arguments: ["@app.slack.client", "@app.awale.client", "@app.awale.manager"]
 
    app.awale.manager:
       class: AppBundle\Awale\AwaleManager

@@ -17,9 +17,13 @@ refresh-containers:
 	$(MAKE) dk down
 	$(MAKE) dk -- rm -f
 	$(MAKE) dk build
+	$(MAKE) run
 
 dk:
 	docker-compose -p awale $(COMMAND_ARGS)
+
+sql:
+	$(MAKE) dk -- run postgres bash
 
 expose:
 	ngrok start app --config=ngrok.yml

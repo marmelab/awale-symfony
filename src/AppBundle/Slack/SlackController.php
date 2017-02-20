@@ -21,14 +21,12 @@ class SlackController extends Controller
     private $slackClient;
     private $awaleClient;
     private $awaleManager;
-    private $session;
 
-    public function __construct(SlackClient $slackClient, AwaleClient $awaleClient, AwaleManager $awaleManager, Session $session)
+    public function __construct(SlackClient $slackClient, AwaleClient $awaleClient, AwaleManager $awaleManager)
     {
         $this->slackClient = $slackClient;
         $this->awaleClient = $awaleClient;
         $this->awaleManager = $awaleManager;
-        $this->session = $session;
     }
 
     /**
@@ -40,6 +38,8 @@ class SlackController extends Controller
        $channel_id = $request->request->get('channel_id');
        $textCommand = $request->request->get('text');
 
+       $fileName = dirname(__FILE__) . '/../../../web/awale/' . $user_id . '.json';
+
        if($textCommand === "new")
        {
            $response = $this->awaleClient->getNewGame();
@@ -47,17 +47,18 @@ class SlackController extends Controller
            $message = $this->awaleManager->getMessageForNewGame($channel_id, $game);
            $this->slackClient->sendMessage($message);
 
-           $this->session->set($user_id, $game);
-           return new Response("");
+           file_put_contents($fileName, json_encode($game));
+           return new Response();
        }
 
-       $currentBoard = $this->session->get($user_id)['Board'];
+       $currentBoard = json_decode(file_get_contents($fileName), true)['Board'];
 
        $response = $this->awaleClient->movePosition($currentBoard, $textCommand);
        $game = json_decode($response->getBody()->getContents(), true);
        $message = $this->awaleManager->getMessageForPosition($channel_id, $game);
        $this->slackClient->sendMessage($message);
 
+       file_put_contents($fileName, json_encode($game["IA"]));
        return new Response();
      }
 }
