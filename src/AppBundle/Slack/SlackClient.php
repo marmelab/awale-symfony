@@ -18,7 +18,8 @@ class SlackClient
     {
         $message = is_string($message) ? ['text' => $message] : $message;
         $response = $this->client->request('POST', $this->key, [
-            'json' => $message
+            'json' => $message,
         ]);
+        return $response;
     }
 }

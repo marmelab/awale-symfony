@@ -9,30 +9,30 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Exception\RequestException;
+use AppBundle\Awale\AwaleClient;
+use PHPUnit\Framework\TestCase;
 
-class AwaleClientTest extends WebTestCase
+class AwaleClientTest extends TestCase
 {
-    public function testNewGameShouldReturn200()
+    public function testNewGameShouldReturnExpectedBoardAndScore()
     {
-        $client = new Client([
-            'base_uri' => 'go:8080'
-        ]);
-        $response = $client->request('GET', '/new');
-        $this->assertEquals(200, $response->getStatusCode());
+        $mockedClient = $this->prophesize(Client::class);
+        $mockedClient
+            ->request('GET', 'http://awale.server.com/new')
+            ->shouldBeCalled();
+
+        $client = new AwaleClient($mockedClient->reveal(), 'http://awale.server.com');
+        $game = $client->getNewGame();
     }
 
-    public function testMovePostionShouldReturn200()
+    public function testMovePostionShouldReturnExpectedBoard()
     {
-        $client = new Client([
-            'base_uri' => 'go:8080'
-        ]);
-        $response = $client->request('POST', '/move', [
-            'json' => [
-                'Position' => "1",
-                'Board' => array(4,4,4,4,4,4,4,4,4,4,4,4),
-                'Ia' => "0",
-            ],
-        ]);
-        $this->assertEquals(200, $response->getStatusCode());
+        $mockedClient = $this->prophesize(Client::class);
+        $mockedClient
+            ->request('POST', 'http://awale.server.com/move', ["json" => ["Position" => 1, "Board" => [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], "Ia" => "0"]])
+            ->shouldBeCalled();
+
+        $client = new AwaleClient($mockedClient->reveal(), 'http://awale.server.com');
+        $game = $client->movePosition(1);
     }
 }

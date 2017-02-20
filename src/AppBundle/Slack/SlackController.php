@@ -35,8 +35,7 @@ class SlackController extends Controller
 
        if($textCommand === "new") {
            $content = $this->awaleClient->getNewGame();
-       }
-       else {
+       } else {
            $content = $this->awaleClient->movePosition($textCommand);
        }
 
@@ -52,6 +51,6 @@ class SlackController extends Controller
 
        $this->slackClient->sendMessage($message);
 
-       return new Response("");
+       return new Response();
      }
 }

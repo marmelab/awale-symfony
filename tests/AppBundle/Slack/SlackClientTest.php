@@ -9,21 +9,18 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Exception\RequestException;
+use AppBundle\Slack\SlackClient;
 
 class SlackClientTest extends WebTestCase
 {
     public function testSendMessageReturn200()
     {
-        $mock = new MockHandler([
-            new Response(200)
-        ]);
+        $mockedClient = $this->prophesize(Client::class);
+        $mockedClient
+            ->request('POST', '', ["json" => ["text" => "hello"]])
+            ->shouldBeCalled();
 
-        $handler = HandlerStack::create($mock);
-        $client = new Client(['handler' => $handler]);
-
-        $response = $client->request('POST', "/", [
-            'json' => ['text' => "hello"]
-        ]);
-        $this->assertEquals(200, $response->getStatusCode());
+        $client = new SlackClient($mockedClient->reveal(), '');
+        $message = $client->sendMessage('hello');
     }
 }
