@@ -11,13 +11,13 @@ class AwaleClient extends \GuzzleHttp\Client
 
   public function getNewGame()
   {
-     $response = $this->request('GET', baseUri . '/new');
+     $response = $this->request('GET', self::baseUri . '/new');
      return json_decode($response->getBody(), true);
   }
 
   public function movePosition($position)
   {
-      $response = $this->request('POST', baseUri . '/move', [
+      $response = $this->request('POST', self::baseUri . '/move', [
           'json' => [
               'Position' => $position,
               'Board' => array(4,4,4,4,4,4,4,4,4,4,4,4),
