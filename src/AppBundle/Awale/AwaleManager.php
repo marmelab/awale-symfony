@@ -16,16 +16,16 @@ class AwaleManager
 
     public function getMessageForNewGame($channel_id, $game)
     {
-        $url = $this->pngGameBoard($game["Board"]);
+        $url = $this->pngGameBoard($game['Board']);
 
         $message = [
-           "text" => 'Score: ' . $game["Score"][0] . ' - ' . $game["Score"][1],
-           "channel" => $channel_id,
-           "attachments" => array(
-               array(
-                   "image_url" => $url,
-               )
-           )
+           'text' => 'Score: ' . $game['Score'][0] . ' - ' . $game['Score'][1],
+           'channel' => $channel_id,
+           'attachments' => [
+               [
+                   'image_url' => $url,
+               ],
+           ],
        ];
 
        return $message;
@@ -33,23 +33,23 @@ class AwaleManager
 
     public function getMessageForPosition($channel_id, $game)
     {
-        $gamePlayer = $game["Player"];
-        $gameIA = $game["IA"];
+        $gamePlayer = $game['Player'];
+        $gameIA = $game['IA'];
 
-        $urlBoardPlayer = $this->pngGameBoard($gamePlayer["Board"]);
-        $urlBoardIA = $this->pngGameBoard($gameIA["Board"]);
+        $urlBoardPlayer = $this->pngGameBoard($gamePlayer['Board']);
+        $urlBoardIA = $this->pngGameBoard($gameIA['Board']);
 
         $message = [
-           "text" => 'Score: ' . $gameIA["Score"][0] . ' - ' . $gameIA["Score"][1],
-           "channel" => $channel_id,
-           "attachments" => array(
-               array(
-                   "image_url" => $urlBoardPlayer,
-               ),
-               array(
-                   "image_url" => $urlBoardIA,
-               )
-           )
+           'text' => 'Score: ' . $gameIA['Score'][0] . ' - ' . $gameIA['Score'][1],
+           'channel' => $channel_id,
+           'attachments' => [
+               [
+                   'image_url' => $urlBoardPlayer,
+               ],
+               [
+                   'image_url' => $urlBoardIA,
+               ],
+           ],
        ];
 
        return $message;
@@ -61,7 +61,7 @@ class AwaleManager
         $path = dirname(__FILE__) . '/../../../web/images/' . $name;
 
         $img = $this->buildBoardImage($board);
-        $img->encode("png");
+        $img->encode('png');
         $img->save($path);
 
         return $this->urlImage . $name;

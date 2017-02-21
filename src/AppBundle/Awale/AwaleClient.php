@@ -20,13 +20,13 @@ class AwaleClient
         return $this->client->request('GET', $this->urlServerAwale.'/new');
     }
 
-  public function movePosition($board, $position)
-  {
-      return $this->client->request('POST', '/move', [
-          'json' => [
-              'Position' => $position,
-              'Board' => $board
-          ],
-      ]);
-  }
+    public function movePosition($board, $position)
+    {
+        return $this->client->request('POST', $this->urlServerAwale.'/move', [
+            'json' => [
+                'Position' => $position,
+                'Board' => $board,
+            ],
+        ]);
+    }
 }

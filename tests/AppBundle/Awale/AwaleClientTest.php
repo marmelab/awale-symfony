@@ -28,10 +28,9 @@ class AwaleClientTest extends TestCase
     public function testMovePostionShouldReturnExpectedBoard()
     {
         $message = [
-            'json' => [
-                'Position' => 1,
-                'Board' => [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-                'Ia' => '0',
+            "json" => [
+                "Position" => 1,
+                "Board" => [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
             ],
         ];
 
@@ -41,6 +40,6 @@ class AwaleClientTest extends TestCase
             ->shouldBeCalled();
 
         $client = new AwaleClient($mockedClient->reveal(), 'http://awale.server.com');
-        $client->movePosition(1);
+        $client->movePosition([4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], 1);
     }
 }

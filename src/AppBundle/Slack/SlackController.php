@@ -58,7 +58,7 @@ class SlackController extends Controller
        $message = $this->awaleManager->getMessageForPosition($channel_id, $game);
        $this->slackClient->sendMessage($message);
 
-       file_put_contents($fileName, json_encode($game["IA"]));
+       file_put_contents($fileName, json_encode($game['IA']));
        return new Response();
      }
 }
