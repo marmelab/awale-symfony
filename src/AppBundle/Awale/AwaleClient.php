@@ -15,12 +15,17 @@ class AwaleClient
         $this->urlServerAwale = $urlServerAwale;
     }
 
-    public function getNewGame()
+    public function getResponseNewGame()
     {
         return $this->client->request('GET', $this->urlServerAwale.'/new');
     }
 
-    public function movePosition($board, $position)
+    public function getNewGame()
+    {
+        return json_decode($this->getResponseNewGame()->getBody()->getContents(), true);
+    }
+
+    public function getResponseMovePosition($board, $position)
     {
         return $this->client->request('POST', $this->urlServerAwale.'/move', [
             'json' => [
@@ -28,5 +33,10 @@ class AwaleClient
                 'Board' => $board,
             ],
         ]);
+    }
+
+    public function movePosition($board, $position)
+    {
+        return json_decode($this->getResponseNewGame($board, $position)->getBody()->getContents(), true);
     }
 }

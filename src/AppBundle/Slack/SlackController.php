@@ -42,8 +42,7 @@ class SlackController extends Controller
 
        if($textCommand === "new")
        {
-           $response = $this->awaleClient->getNewGame();
-           $game = json_decode($response->getBody()->getContents(), true);
+           $game = $this->awaleClient->getNewGame();
            $message = $this->gameSlackFormatter->getMessageForNewGame($channelId, $game);
            $this->slackClient->sendMessage($message);
 
@@ -53,8 +52,7 @@ class SlackController extends Controller
 
        $currentBoard = json_decode(file_get_contents($fileName), true)['Board'];
 
-       $response = $this->awaleClient->movePosition($currentBoard, $textCommand);
-       $game = json_decode($response->getBody()->getContents(), true);
+       $game = $this->awaleClient->movePosition($currentBoard, $textCommand);
        $message = $this->gameSlackFormatter->getMessageForPosition($channelId, $game);
        $this->slackClient->sendMessage($message);
 
