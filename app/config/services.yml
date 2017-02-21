@@ -22,7 +22,7 @@ services:
 
     app.slack.controller:
         class: AppBundle\Slack\SlackController
-        arguments: ["@app.slack.client", "@app.awale.client", "@app.awale.slack_game_formatter"]
+        arguments: ["@app.slack.client", "@app.awale.client", "@app.awale.slack_game_formatter", "@app.entity.game_repository"]
 
     app.awale.slack_game_formatter:
         class: AppBundle\Awale\GameSlackFormatter
@@ -34,3 +34,8 @@ services:
         arguments:
           - "%assetsBaseUrl%"
           - "%awale.assetsBasePathForSave%"
+
+    app.entity.game_repository:
+       class: AppBundle\Entity\GameRepository
+       arguments:
+         - "@doctrine.orm.entity_manager"

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Slack\SlackClient;
 use AppBundle\Awale\AwaleClient;
+use AppBundle\Entity\GameRepository;
 use AppBundle\Awale\GameSlackFormatter;
 
 use GuzzleHttp\Client;
@@ -20,12 +21,14 @@ class SlackController extends Controller
     private $slackClient;
     private $awaleClient;
     private $gameSlackFormatter;
+    private $gameRepository;
 
-    public function __construct(SlackClient $slackClient, AwaleClient $awaleClient, GameSlackFormatter $gameSlackFormatter)
+    public function __construct(SlackClient $slackClient, AwaleClient $awaleClient, GameSlackFormatter $gameSlackFormatter, GameRepository $gameRepository)
     {
         $this->slackClient = $slackClient;
         $this->awaleClient = $awaleClient;
         $this->gameSlackFormatter = $gameSlackFormatter;
+        $this->gameRepository = $gameRepository;
     }
 
     /**
@@ -37,24 +40,26 @@ class SlackController extends Controller
        $channelId = $request->request->get('channel_id');
        $textCommand = $request->request->get('text');
 
-       $fileName = dirname(__FILE__) . '/../../../web/awale/' . $userId . '.json';
-
        if($textCommand === "new") {
            $game = $this->awaleClient->getNewGame();
            $message = $this->gameSlackFormatter->getMessageForNewGame($channelId, $game);
            $this->slackClient->sendMessage($message);
 
-           file_put_contents($fileName, json_encode($game));
+           $this->gameRepository->addNewGame($userId, $game['Board'], $game['Score']);
+           $this->gameRepository->flush();
+
            return new Response();
        }
 
-       $currentBoard = json_decode(file_get_contents($fileName), true)['Board'];
+       $currentBoard = $this->gameRepository->findBoardByUserId($userId);
 
        $game = $this->awaleClient->movePosition($currentBoard, $textCommand);
        $message = $this->gameSlackFormatter->getMessageForPosition($channelId, $game);
        $this->slackClient->sendMessage($message);
 
-       file_put_contents($fileName, json_encode($game['IA']));
+       $this->gameRepository->updateGameByUserId($userId, $game['IA']['Board'], $game['IA']['Score']);
+       $this->gameRepository->flush();
+
        return new Response();
      }
 }
