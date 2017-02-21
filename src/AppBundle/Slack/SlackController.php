@@ -12,7 +12,7 @@ use AppBundle\Awale\AwaleClient;
 use GuzzleHttp\Client;
 
 /**
- * @Route(service="app.slack.controller")
+ * @Route(service='app.slack.controller')
  */
 class SlackController extends Controller
 {
@@ -26,27 +26,29 @@ class SlackController extends Controller
     }
 
     /**
-     * @Route("/webhook", name="webhook")
+     * @Route('/webhook', name='webhook')
      */
      public function webhookAction(Request $request)
      {
        $channelId = $request->request->get('channel_id');
        $textCommand = $request->request->get('text');
 
-       if($textCommand === "new") {
-           $content = $this->awaleClient->getNewGame();
+       if($textCommand === 'new') {
+           $response = $this->awaleClient->getNewGame();
        } else {
-           $content = $this->awaleClient->movePosition($textCommand);
+           $response = $this->awaleClient->movePosition($textCommand);
        }
 
+       $content = json_decode($response->getBody()->getContents(), true);
+
        $message = [
-          "text" =>  implode("|", $content["Board"]),
-          "channel" => $channelId,
-          "attachments" => array(
-              array(
-                  "image_url" => "http://www.espritjeu.com/upload/image/awale-p-image-47814-grande.jpg",
-              )
-          )
+          'text' =>  implode('|', $content['Board']),
+          'channel' => $channelId,
+          'attachments' => [
+              [
+                  'image_url' => 'http://www.espritjeu.com/upload/image/awale-p-image-47814-grande.jpg',
+              ],
+          ],
       ];
 
        $this->slackClient->sendMessage($message);

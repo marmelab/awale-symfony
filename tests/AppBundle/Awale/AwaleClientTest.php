@@ -22,7 +22,7 @@ class AwaleClientTest extends TestCase
             ->shouldBeCalled();
 
         $client = new AwaleClient($mockedClient->reveal(), 'http://awale.server.com');
-        $game = $client->getNewGame();
+        $client->getNewGame();
     }
 
     public function testMovePostionShouldReturnExpectedBoard()
@@ -32,7 +32,7 @@ class AwaleClientTest extends TestCase
                 'Position' => 1,
                 'Board' => [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
                 'Ia' => '0',
-            ]
+            ],
         ];
 
         $mockedClient = $this->prophesize(Client::class);
@@ -41,6 +41,6 @@ class AwaleClientTest extends TestCase
             ->shouldBeCalled();
 
         $client = new AwaleClient($mockedClient->reveal(), 'http://awale.server.com');
-        $game = $client->movePosition(1);
+        $client->movePosition(1);
     }
 }
