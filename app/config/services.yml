@@ -2,6 +2,7 @@
 # http://symfony.com/doc/current/service_container.html
 parameters:
     awale.baseUrl: "http://localhost:2000"
+    awale.assetsBasePathForSave: "%kernel.root_dir%/../web/images/"
 
 services:
     guzzle.client:
@@ -32,3 +33,4 @@ services:
         class: AppBundle\Awale\BoardImageGenerate
         arguments:
           - "%assetsBaseUrl%"
+          - "%awale.assetsBasePathForSave%"

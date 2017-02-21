@@ -7,16 +7,18 @@ use Intervention\Image\ImageManagerStatic as Image;
 class BoardImageGenerate
 {
     private $assetsBaseUrl;
+    private $assetsBasePathForSave;
 
-    public function __construct($assetsBaseUrl)
+    public function __construct($assetsBaseUrl, $assetsBasePathForSave)
     {
         $this->assetsBaseUrl = $assetsBaseUrl;
+        $this->assetsBasePathForSave = $assetsBasePathForSave;
     }
 
     public function saveBoardAsPng($board)
     {
         $name = uniqid().'.png';
-        $path = dirname(__FILE__) . '/../../../web/images/' . $name;
+        $path = $this->assetsBasePathForSave . $name;
 
         $img = $this->generateBoardImage($board);
         $img->encode('png');
