@@ -1,7 +1,7 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/service_container.html
 parameters:
-    awale.baseUrl: "go:8080"
+    awale.baseUrl: "http://localhost:2000"
 
 services:
     guzzle.client:

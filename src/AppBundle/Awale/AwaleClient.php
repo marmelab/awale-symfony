@@ -37,6 +37,6 @@ class AwaleClient
 
     public function movePosition($board, $position)
     {
-        return json_decode($this->getResponseNewGame($board, $position)->getBody()->getContents(), true);
+        return json_decode($this->getResponseMovePosition($board, $position)->getBody()->getContents(), true);
     }
 }
