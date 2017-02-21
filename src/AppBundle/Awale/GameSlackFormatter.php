@@ -2,21 +2,20 @@
 
 namespace AppBundle\Awale;
 
-use AppBundle\Awale\BoardImageConverter;
+use AppBundle\Awale\BoardImageGenerate;
 
 class GameSlackFormatter
 {
+    private $imageGenerator;
 
-    private $boardImage;
-
-    public function __construct(BoardImageConverter $boardImage)
+    public function __construct(BoardImageGenerate $imageGenerator)
     {
-        $this->boardImage = $boardImage;
+        $this->imageGenerator = $imageGenerator;
     }
 
     public function getMessageForNewGame($channelId, $game)
     {
-        $url = $this->boardImage->pngGameBoard($game['Board']);
+        $url = $this->imageGenerator->saveBoardAsPng($game['Board']);
 
         $message = [
            'text' => 'Score: ' . $game['Score'][0] . ' - ' . $game['Score'][1],
@@ -36,8 +35,8 @@ class GameSlackFormatter
         $gamePlayer = $game['Player'];
         $gameIA = $game['IA'];
 
-        $urlBoardPlayer = $this->boardImage->pngGameBoard($gamePlayer['Board']);
-        $urlBoardIA = $this->boardImage->pngGameBoard($gameIA['Board']);
+        $urlBoardPlayer = $this->imageGenerator->saveBoardAsPng($gamePlayer['Board']);
+        $urlBoardIA = $this->imageGenerator->saveBoardAsPng($gameIA['Board']);
 
         $message = [
            'text' => 'Score: ' . $gameIA['Score'][0] . ' - ' . $gameIA['Score'][1],

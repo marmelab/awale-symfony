@@ -4,9 +4,8 @@ namespace AppBundle\Awale;
 
 use Intervention\Image\ImageManagerStatic as Image;
 
-class BoardImageConverter
+class BoardImageGenerate
 {
-
     private $assetsBaseUrl;
 
     public function __construct($assetsBaseUrl)
@@ -14,24 +13,23 @@ class BoardImageConverter
         $this->assetsBaseUrl = $assetsBaseUrl;
     }
 
-    public function pngGameBoard($board)
+    public function saveBoardAsPng($board)
     {
-        $name = uniqid() . '.png';
+        $name = uniqid().'.png';
         $path = dirname(__FILE__) . '/../../../web/images/' . $name;
 
-        $img = $this->buildBoardImage($board);
+        $img = $this->generateBoardImage($board);
         $img->encode('png');
         $img->save($path);
 
         return $this->assetsBaseUrl . $name;
     }
 
-    private function buildBoardImage($board)
+    private function generateBoardImage($board)
     {
         Image::configure(array('driver' => 'gd'));
         $img = Image::canvas(400, 370, '#0BAC9F');
-        $img->rectangle(10, 100, 390, 270, function ($draw)
-        {
+        $img->rectangle(10, 100, 390, 270, function ($draw){
             $draw->background('#f39c12');
         });
 
@@ -39,13 +37,11 @@ class BoardImageConverter
         foreach($arrtop as $key=>$row)
         {
             $width = $key * 60;
-            $img->circle(50, 50 + $width, 150, function ($draw)
-            {
+            $img->circle(50, 50 + $width, 150, function ($draw){
                 $draw->background('#d35400');
             });
 
-            $img->text(str_pad($row, 2, ' ', STR_PAD_LEFT), 35 + $width, 160, function($font)
-            {
+            $img->text(str_pad($row, 2, ' ', STR_PAD_LEFT), 35 + $width, 160, function($font){
                 $font->size(30);
                 $font->file(dirname(__FILE__) . '/../Resources/public/font/arial.ttf');
                 $font->color('#f1c40f');
@@ -56,13 +52,11 @@ class BoardImageConverter
         foreach($arrbottom as $key=>$row)
         {
             $width = $key * 60;
-            $img->circle(50, 50 + $width, 220, function ($draw)
-            {
+            $img->circle(50, 50 + $width, 220, function ($draw){
                 $draw->background('#d35400');
             });
 
-            $img->text(str_pad($row, 2, ' ', STR_PAD_LEFT), 35 + $width, 230, function($font)
-            {
+            $img->text(str_pad($row, 2, ' ', STR_PAD_LEFT), 35 + $width, 230, function($font){
                 $font->size(30);
                 $font->file(dirname(__FILE__) . '/../Resources/public/font/arial.ttf');
                 $font->color('#f1c40f');

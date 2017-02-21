@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Slack\SlackClient;
 use AppBundle\Awale\AwaleClient;
 use AppBundle\Awale\GameSlackFormatter;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 use GuzzleHttp\Client;
 
@@ -40,8 +39,7 @@ class SlackController extends Controller
 
        $fileName = dirname(__FILE__) . '/../../../web/awale/' . $userId . '.json';
 
-       if($textCommand === "new")
-       {
+       if($textCommand === "new") {
            $game = $this->awaleClient->getNewGame();
            $message = $this->gameSlackFormatter->getMessageForNewGame($channelId, $game);
            $this->slackClient->sendMessage($message);
