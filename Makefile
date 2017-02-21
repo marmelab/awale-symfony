@@ -2,12 +2,12 @@ run:
 
 
 install:
-	#php composer install -d /app
+	composer install
 	cp -n phpunit.xml.dist phpunit.xml
 	git submodule update --recursive --remote
 
 test:
-	#$(MAKE) dk -- run --no-deps php ./vendor/bin/phpunit -v
+	phpunit -v
 
 expose:
 	ngrok start app --config=ngrok.yml
