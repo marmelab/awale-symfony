@@ -7,6 +7,8 @@ run:
 install:
 	$(MAKE) dk -- build
 	$(MAKE) dk -- run --no-deps php composer install -d /app
+	cp -n phpunit.xml.dist phpunit.xml
+	git submodule update --recursive --remote
 
 stop:
 	$(MAKE) dk down
@@ -18,6 +20,12 @@ refresh-containers:
 
 dk:
 	docker-compose -p awale $(COMMAND_ARGS)
+
+expose:
+	ngrok start app --config=ngrok.yml
+
+test:
+	$(MAKE) dk -- run --no-deps php ./vendor/bin/phpunit -v
 
 # Utility commands used to pass some arguments (COMMAND_ARGS) to following commands docker
 SUPPORTED_COMMANDS := dk
