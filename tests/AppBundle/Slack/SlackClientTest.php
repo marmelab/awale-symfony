@@ -16,10 +16,10 @@ class SlackClientTest extends WebTestCase
     {
         $mockedClient = $this->prophesize(Client::class);
         $mockedClient
-            ->request('POST', 'key', ["json" => ["text" => "hello"]])
+            ->request('POST', 'http://slack.client.com', ['json' => ['text' => 'hello']])
             ->shouldBeCalled();
 
-        $client = new SlackClient($mockedClient->reveal(), 'key');
+        $client = new SlackClient($mockedClient->reveal(), 'http://slack.client.com');
         $message = $client->sendMessage('hello');
     }
 }

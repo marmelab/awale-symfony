@@ -12,7 +12,7 @@ use AppBundle\Awale\AwaleClient;
 use GuzzleHttp\Client;
 
 /**
- * @Route(service='app.slack.controller')
+ * @Route(service="app.slack.controller")
  */
 class SlackController extends Controller
 {
@@ -26,7 +26,7 @@ class SlackController extends Controller
     }
 
     /**
-     * @Route('/webhook', name='webhook')
+     * @Route("/webhook", name="webhook")
      */
      public function webhookAction(Request $request)
      {
