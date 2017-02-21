@@ -31,4 +31,4 @@ services:
     app.awale.boardimage:
         class: AppBundle\Awale\BoardImageConverter
         arguments:
-          - "%url_images%"
+          - "%assetsBaseUrl%"

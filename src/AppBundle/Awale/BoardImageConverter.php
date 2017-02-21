@@ -7,11 +7,11 @@ use Intervention\Image\ImageManagerStatic as Image;
 class BoardImageConverter
 {
 
-    private $urlImage;
+    private $assetsBaseUrl;
 
-    public function __construct($urlImage)
+    public function __construct($assetsBaseUrl)
     {
-        $this->urlImage = $urlImage;
+        $this->assetsBaseUrl = $assetsBaseUrl;
     }
 
     public function pngGameBoard($board)
@@ -23,7 +23,7 @@ class BoardImageConverter
         $img->encode('png');
         $img->save($path);
 
-        return $this->urlImage . $name;
+        return $this->assetsBaseUrl . $name;
     }
 
     private function buildBoardImage($board)
