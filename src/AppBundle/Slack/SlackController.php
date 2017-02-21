@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Slack\SlackClient;
 use AppBundle\Awale\AwaleClient;
-use AppBundle\Awale\AwaleManager;
+use AppBundle\Awale\GameSlackFormatter;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 use GuzzleHttp\Client;
@@ -20,13 +20,13 @@ class SlackController extends Controller
 {
     private $slackClient;
     private $awaleClient;
-    private $awaleManager;
+    private $gameSlackFormatter;
 
-    public function __construct(SlackClient $slackClient, AwaleClient $awaleClient, AwaleManager $awaleManager)
+    public function __construct(SlackClient $slackClient, AwaleClient $awaleClient, GameSlackFormatter $gameSlackFormatter)
     {
         $this->slackClient = $slackClient;
         $this->awaleClient = $awaleClient;
-        $this->awaleManager = $awaleManager;
+        $this->gameSlackFormatter = $gameSlackFormatter;
     }
 
     /**
@@ -44,7 +44,7 @@ class SlackController extends Controller
        {
            $response = $this->awaleClient->getNewGame();
            $game = json_decode($response->getBody()->getContents(), true);
-           $message = $this->awaleManager->getMessageForNewGame($channel_id, $game);
+           $message = $this->gameSlackFormatter->getMessageForNewGame($channel_id, $game);
            $this->slackClient->sendMessage($message);
 
            file_put_contents($fileName, json_encode($game));
@@ -55,7 +55,7 @@ class SlackController extends Controller
 
        $response = $this->awaleClient->movePosition($currentBoard, $textCommand);
        $game = json_decode($response->getBody()->getContents(), true);
-       $message = $this->awaleManager->getMessageForPosition($channel_id, $game);
+       $message = $this->gameSlackFormatter->getMessageForPosition($channel_id, $game);
        $this->slackClient->sendMessage($message);
 
        file_put_contents($fileName, json_encode($game['IA']));

@@ -21,9 +21,14 @@ services:
 
     app.slack.controller:
         class: AppBundle\Slack\SlackController
-        arguments: ["@app.slack.client", "@app.awale.client", "@app.awale.manager"]
+        arguments: ["@app.slack.client", "@app.awale.client", "@app.awale.gameslack"]
 
-    app.awale.manager:
-        class: AppBundle\Awale\AwaleManager
+    app.awale.gameslack:
+        class: AppBundle\Awale\GameSlackFormatter
+        arguments:
+          - "@app.awale.boardimage"
+
+    app.awale.boardimage:
+        class: AppBundle\Awale\BoardImageConverter
         arguments:
           - "%url_images%"
