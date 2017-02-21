@@ -17,12 +17,14 @@ class BoardImageGenerate
 
     public function saveBoardAsPng($board)
     {
-        $name = uniqid().'.png';
+        $name = md5(implode("", $board)).'.png';
         $path = $this->assetsBasePathForSave . $name;
 
-        $img = $this->generateBoardImage($board);
-        $img->encode('png');
-        $img->save($path);
+        if(!file_exists($path)) {
+            $img = $this->generateBoardImage($board);
+            $img->encode('png');
+            $img->save($path);
+        }
 
         return $this->assetsBaseUrl . $name;
     }
