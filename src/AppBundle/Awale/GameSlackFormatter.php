@@ -14,13 +14,13 @@ class GameSlackFormatter
         $this->boardImage = $boardImage;
     }
 
-    public function getMessageForNewGame($channel_id, $game)
+    public function getMessageForNewGame($channelId, $game)
     {
         $url = $this->boardImage->pngGameBoard($game['Board']);
 
         $message = [
            'text' => 'Score: ' . $game['Score'][0] . ' - ' . $game['Score'][1],
-           'channel' => $channel_id,
+           'channel' => $channelId,
            'attachments' => [
                [
                    'image_url' => $url,
@@ -31,7 +31,7 @@ class GameSlackFormatter
        return $message;
     }
 
-    public function getMessageForPosition($channel_id, $game)
+    public function getMessageForPosition($channelId, $game)
     {
         $gamePlayer = $game['Player'];
         $gameIA = $game['IA'];
@@ -41,7 +41,7 @@ class GameSlackFormatter
 
         $message = [
            'text' => 'Score: ' . $gameIA['Score'][0] . ' - ' . $gameIA['Score'][1],
-           'channel' => $channel_id,
+           'channel' => $channelId,
            'attachments' => [
                [
                    'image_url' => $urlBoardPlayer,

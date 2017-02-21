@@ -34,17 +34,17 @@ class SlackController extends Controller
      */
      public function webhookAction(Request $request)
      {
-       $user_id = $request->request->get('user_id');
-       $channel_id = $request->request->get('channel_id');
+       $userId= $request->request->get('user_id');
+       $channelId = $request->request->get('channel_id');
        $textCommand = $request->request->get('text');
 
-       $fileName = dirname(__FILE__) . '/../../../web/awale/' . $user_id . '.json';
+       $fileName = dirname(__FILE__) . '/../../../web/awale/' . $userId . '.json';
 
        if($textCommand === "new")
        {
            $response = $this->awaleClient->getNewGame();
            $game = json_decode($response->getBody()->getContents(), true);
-           $message = $this->gameSlackFormatter->getMessageForNewGame($channel_id, $game);
+           $message = $this->gameSlackFormatter->getMessageForNewGame($channelId, $game);
            $this->slackClient->sendMessage($message);
 
            file_put_contents($fileName, json_encode($game));
@@ -55,7 +55,7 @@ class SlackController extends Controller
 
        $response = $this->awaleClient->movePosition($currentBoard, $textCommand);
        $game = json_decode($response->getBody()->getContents(), true);
-       $message = $this->gameSlackFormatter->getMessageForPosition($channel_id, $game);
+       $message = $this->gameSlackFormatter->getMessageForPosition($channelId, $game);
        $this->slackClient->sendMessage($message);
 
        file_put_contents($fileName, json_encode($game['IA']));
