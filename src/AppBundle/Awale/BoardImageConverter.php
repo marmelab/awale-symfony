@@ -4,7 +4,7 @@ namespace AppBundle\Awale;
 
 use Intervention\Image\ImageManagerStatic as Image;
 
-class BoardImageGenerate
+class BoardImageConverter
 {
     private $assetsBaseUrl;
     private $assetsBasePathForSave;
@@ -26,14 +26,14 @@ class BoardImageGenerate
             $img->save($path);
         }
 
-        return $this->assetsBaseUrl . $name;
+        return $this->assetsBaseUrl.$name;
     }
 
     private function generateBoardImage($board)
     {
         Image::configure(array('driver' => 'gd'));
         $img = Image::canvas(400, 370, '#0BAC9F');
-        $img->rectangle(10, 100, 390, 270, function ($draw){
+        $img->rectangle(10, 100, 390, 270, function ($draw) {
             $draw->background('#f39c12');
         });
 
@@ -41,7 +41,7 @@ class BoardImageGenerate
         foreach($arrtop as $key=>$row)
         {
             $width = $key * 60;
-            $img->circle(50, 50 + $width, 150, function ($draw){
+            $img->circle(50, 50 + $width, 150, function ($draw) {
                 $draw->background('#d35400');
             });
 
@@ -56,7 +56,7 @@ class BoardImageGenerate
         foreach($arrbottom as $key=>$row)
         {
             $width = $key * 60;
-            $img->circle(50, 50 + $width, 220, function ($draw){
+            $img->circle(50, 50 + $width, 220, function ($draw) {
                 $draw->background('#d35400');
             });
 

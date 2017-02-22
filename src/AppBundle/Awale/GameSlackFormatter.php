@@ -2,13 +2,13 @@
 
 namespace AppBundle\Awale;
 
-use AppBundle\Awale\BoardImageGenerate;
+use AppBundle\Awale\BoardImageConverter;
 
 class GameSlackFormatter
 {
     private $imageGenerator;
 
-    public function __construct(BoardImageGenerate $imageGenerator)
+    public function __construct(BoardImageConverter $imageGenerator)
     {
         $this->imageGenerator = $imageGenerator;
     }

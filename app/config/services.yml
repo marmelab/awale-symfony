@@ -2,7 +2,7 @@
 # http://symfony.com/doc/current/service_container.html
 parameters:
     awale.baseUrl: "http://localhost:2000"
-    awale.assetsBasePathForSave: "%kernel.root_dir%/../web/images/"
+    awale.assetsBasePathForSave: "%kernel.root_dir%/../web/boards/"
 
 services:
     guzzle.client:
@@ -27,10 +27,10 @@ services:
     app.awale.slack_game_formatter:
         class: AppBundle\Awale\GameSlackFormatter
         arguments:
-          - "@app.awale.board_image_convert"
+          - "@app.awale.board_image_converter"
 
-    app.awale.board_image_convert:
-        class: AppBundle\Awale\BoardImageGenerate
+    app.awale.board_image_converter:
+        class: AppBundle\Awale\BoardImageConverter
         arguments:
           - "%assetsBaseUrl%"
           - "%awale.assetsBasePathForSave%"
