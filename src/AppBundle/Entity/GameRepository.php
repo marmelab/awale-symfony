@@ -29,18 +29,6 @@ class GameRepository extends \Doctrine\ORM\EntityRepository
         return $this->em->find('AppBundle\Entity\Game', $userId);
     }
 
-    public function findBoardByUserId($userId)
-    {
-        return $this->findGameByUserId($userId)->getBoard();
-    }
-
-    public function updateGameByUserId($userId, $board, $score)
-    {
-        $game = $this->findGameByUserId($userId);
-        $game->setBoard($board);
-        $game->setScore($score);
-    }
-
     public function flush()
     {
         $this->em->flush();

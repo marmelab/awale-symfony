@@ -51,13 +51,14 @@ class SlackController extends Controller
            return new Response();
        }
 
-       $currentBoard = $this->gameRepository->findBoardByUserId($userId);
+       $gameEntity = $this->gameRepository->findGameByUserId($userId);
 
-       $game = $this->awaleClient->movePosition($currentBoard, $textCommand);
+       $game = $this->awaleClient->movePosition($gameEntity->getBoard(), $textCommand);
        $message = $this->gameSlackFormatter->getMessageForPosition($channelId, $game);
        $this->slackClient->sendMessage($message);
 
-       $this->gameRepository->updateGameByUserId($userId, $game['IA']['Board'], $game['IA']['Score']);
+       $gameEntity->setBoard($game['IA']['Board']);
+       $gameEntity->setScore($game['IA']['Score']);
        $this->gameRepository->flush();
 
        return new Response();
