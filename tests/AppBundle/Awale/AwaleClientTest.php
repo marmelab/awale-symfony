@@ -16,12 +16,12 @@ class AwaleClientTest extends TestCase
 {
     public function testNewGameShouldReturnExpectedBoardAndScore()
     {
-        $request = new Request('GET', 'http://awale.server.com/new');
+        $response = new Response();
 
         $mockedClient = $this->prophesize(Client::class);
         $mockedClient
             ->request('GET', 'http://awale.server.com/new')
-            ->willReturn($request)
+            ->willReturn($response)
             ->shouldBeCalled();
 
         $client = new AwaleClient($mockedClient->reveal(), 'http://awale.server.com');
@@ -30,7 +30,7 @@ class AwaleClientTest extends TestCase
 
     public function testMovePostionShouldReturnExpectedBoard()
     {
-        $request = new Request('POST', 'http://awale.server.com/move');
+        $response = new Response();
 
         $message = [
             "json" => [
@@ -42,7 +42,7 @@ class AwaleClientTest extends TestCase
         $mockedClient = $this->prophesize(Client::class);
         $mockedClient
             ->request('POST', 'http://awale.server.com/move', $message)
-            ->willReturn($request)
+            ->willReturn($response)
             ->shouldBeCalled();
 
         $client = new AwaleClient($mockedClient->reveal(), 'http://awale.server.com');
