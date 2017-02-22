@@ -44,10 +44,10 @@ class SlackController extends Controller
 
        if($textCommand === "new") {
            if($gameEntity !== null) {
-               return new Response("You already have a current game, you have /awale restart to restart a game");
+               return new Response("You already started a game. Type /awale restart to start a new game.");
            }
 
-           $game = $this->SendMessageForNewGame($channelId);
+           $game = $this->sendMessageForNewGame($channelId);
 
            $this->gameRepository->addNewGame($userId, $game['Board'], $game['Score']);
            $this->gameRepository->flush();
@@ -56,10 +56,10 @@ class SlackController extends Controller
 
        } else if($textCommand === "restart") {
            if($gameEntity === null) {
-               return new Response("You must run a /awale new");
+               return new Response("You have currently no game started. Start one by typing /awale new.");
            }
 
-           $game = $this->SendMessageForNewGame($channelId);
+           $game = $this->sendMessageForNewGame($channelId);
 
            $gameEntity->setBoard($game['Board']);
            $gameEntity->setScore($game['Score']);
@@ -69,7 +69,7 @@ class SlackController extends Controller
        }
 
        if($gameEntity === null) {
-           return new Response("You must run a /awale new");
+           return new Response("You have currently no game started. Start one by typing /awale new.");
        }
 
        $game = $this->awaleClient->movePosition($gameEntity->getBoard(), $textCommand);
@@ -83,7 +83,7 @@ class SlackController extends Controller
        return new Response();
      }
 
-     private function SendMessageForNewGame($channelId)
+     private function sendMessageForNewGame($channelId)
      {
          $game = $this->awaleClient->getNewGame();
          $message = $this->gameSlackFormatter->getMessageForNewGame($channelId, $game);
