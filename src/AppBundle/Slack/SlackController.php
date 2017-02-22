@@ -40,18 +40,37 @@ class SlackController extends Controller
        $channelId = $request->request->get('channel_id');
        $textCommand = $request->request->get('text');
 
+       $gameEntity = $this->gameRepository->findGameByUserId($userId);
+
        if($textCommand === "new") {
-           $game = $this->awaleClient->getNewGame();
-           $message = $this->gameSlackFormatter->getMessageForNewGame($channelId, $game);
-           $this->slackClient->sendMessage($message);
+           if($gameEntity !== null) {
+               return new Response("You already have a current game, you have /awale restart to restart a game");
+           }
+
+           $game = $this->SendMessageForNewGame($channelId);
 
            $this->gameRepository->addNewGame($userId, $game['Board'], $game['Score']);
            $this->gameRepository->flush();
 
            return new Response();
+
+       } else if($textCommand === "restart") {
+           if($gameEntity === null) {
+               return new Response("You must run a /awale new");
+           }
+
+           $game = $this->SendMessageForNewGame($channelId);
+
+           $gameEntity->setBoard($game['Board']);
+           $gameEntity->setScore($game['Score']);
+           $this->gameRepository->flush();
+
+           return new Response();
        }
 
-       $gameEntity = $this->gameRepository->findGameByUserId($userId);
+       if($gameEntity === null) {
+           return new Response("You must run a /awale new");
+       }
 
        $game = $this->awaleClient->movePosition($gameEntity->getBoard(), $textCommand);
        $message = $this->gameSlackFormatter->getMessageForPosition($channelId, $game);
@@ -62,5 +81,14 @@ class SlackController extends Controller
        $this->gameRepository->flush();
 
        return new Response();
+     }
+
+     private function SendMessageForNewGame($channelId)
+     {
+         $game = $this->awaleClient->getNewGame();
+         $message = $this->gameSlackFormatter->getMessageForNewGame($channelId, $game);
+         $this->slackClient->sendMessage($message);
+
+         return $game;
      }
 }

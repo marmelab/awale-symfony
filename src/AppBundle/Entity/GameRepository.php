@@ -14,14 +14,8 @@ class GameRepository extends \Doctrine\ORM\EntityRepository
 
     public function addNewGame($userId, $board, $score)
     {
-        $game = $this->findGameByUserId($userId);
-        if($game === null) {
-            $game = new Game($userId, $board, $score);
-            $this->em->persist($game);
-        } else {
-            $game->setBoard($board);
-            $game->setScore($score);
-        }
+        $game = new Game($userId, $board, $score);
+        $this->em->persist($game);
     }
 
     public function findGameByUserId($userId)
