@@ -15,28 +15,21 @@ class AwaleClient
         $this->urlServerAwale = $urlServerAwale;
     }
 
-    public function getResponseNewGame()
-    {
-        return $this->client->request('GET', $this->urlServerAwale.'/new');
-    }
-
     public function getNewGame()
     {
-        return json_decode($this->getResponseNewGame()->getBody()->getContents(), true);
+        $response = $this->client->request('GET', $this->urlServerAwale.'/new');
+        return json_decode($response->getBody()->getContents(), true);
     }
 
-    public function getResponseMovePosition($board, $position)
+    public function movePosition($board, $position)
     {
-        return $this->client->request('POST', $this->urlServerAwale.'/move', [
+        $response = $this->client->request('POST', $this->urlServerAwale.'/move', [
             'json' => [
                 'Position' => $position,
                 'Board' => $board,
             ],
         ]);
-    }
-
-    public function movePosition($board, $position)
-    {
-        return json_decode($this->getResponseMovePosition($board, $position)->getBody()->getContents(), true);
+        
+        return json_decode($response->getBody()->getContents(), true);
     }
 }
