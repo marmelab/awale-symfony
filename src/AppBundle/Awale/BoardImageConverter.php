@@ -45,7 +45,7 @@ class BoardImageConverter
                 $draw->background('#d35400');
             });
 
-            $img->text(str_pad($row, 2, ' ', STR_PAD_LEFT), 35 + $width, 160, function($font){
+            $img->text(str_pad($row, 2, ' ', STR_PAD_LEFT), 35 + $width, 160, function($font) {
                 $font->size(30);
                 $font->file(dirname(__FILE__) . '/../Resources/public/font/arial.ttf');
                 $font->color('#f1c40f');
@@ -60,7 +60,7 @@ class BoardImageConverter
                 $draw->background('#d35400');
             });
 
-            $img->text(str_pad($row, 2, ' ', STR_PAD_LEFT), 35 + $width, 230, function($font){
+            $img->text(str_pad($row, 2, ' ', STR_PAD_LEFT), 35 + $width, 230, function($font) {
                 $font->size(30);
                 $font->file(dirname(__FILE__) . '/../Resources/public/font/arial.ttf');
                 $font->color('#f1c40f');
