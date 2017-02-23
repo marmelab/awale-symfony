@@ -35,20 +35,6 @@ class Game
     }
 
     /**
-     * Set userId
-     *
-     * @param integer $userId
-     *
-     * @return Game
-     */
-    public function setUserId($userId)
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
-
-    /**
      * Get userId
      *
      * @return integer
